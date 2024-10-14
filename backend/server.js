@@ -6,6 +6,7 @@ const cors = require("cors");
 const jwt = require("jsonwebtoken");
 const { authenticateToken } = require("./utils.js");
 const User = require("./models/user.model.js");
+const Note = require("./models/note.model.js");
 const bcrypt = require("bcrypt");
 
 const app = express();
@@ -58,7 +59,7 @@ app.post("/create-account", async (req, res) => {
     newUser.password = await bcrypt.hash(password, 10);
     await newUser.save();
 
-    const accessToken = jwt.sign({ newUser }, process.env.JWT_SECRET, {
+    const accessToken = jwt.sign({ _id: newUser._id }, process.env.JWT_SECRET, {
       expiresIn: "36000m",
     });
 
@@ -107,7 +108,7 @@ app.post("/login", async (req, res) => {
     }
 
     const user = { user: isUser };
-    const accessToken = jwt.sign({ user }, process.env.JWT_SECRET, {
+    const accessToken = jwt.sign({ _id: isUser._id }, process.env.JWT_SECRET, {
       expiresIn: "36000m",
     });
 
@@ -124,7 +125,43 @@ app.post("/login", async (req, res) => {
   }
 });
 
+app.post("/add-note", authenticateToken, async (req, res) => {
+  try {
+    const { title, content, tags } = req.body;
+    const user = req.user;
 
+    if (!title) {
+      return res
+        .status(400)
+        .json({ error: true, message: "Title is required" });
+    }
+
+    if (!content) {
+      return res
+        .status(400)
+        .json({ error: true, message: "Content is required" });
+    }
+
+    const note = new Note({
+      title,
+      content,
+      tags: tags || [],
+      userId: user._id,
+    });
+
+    // console.log(user, note, "done here");
+
+    await note.save();
+
+    // console.log("Yaha tak save ho gya");
+
+    return res
+      .status(201)
+      .json({ error: false, note, message: "Note added successfully" });
+  } catch (err) {
+    return res.status(500).json({ error: true, message: err });
+  }
+});
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
