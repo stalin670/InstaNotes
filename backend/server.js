@@ -126,6 +126,32 @@ app.post("/login", async (req, res) => {
   }
 });
 
+// get user api
+app.get("/get-user", authenticateToken, async (req, res) => {
+  try {
+    const user = req.user;
+    const isUser = await User.findOne({ _id: user._id });
+
+    if (!isUser) {
+      return res.status(404).json({
+        error: true,
+        message: "User not found",
+      });
+    }
+
+    return res.status(200).json({
+      error: false,
+      user: isUser,
+      message: "Found",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      error: true,
+      message: "Internal Server Error",
+    });
+  }
+});
+
 // add note api
 app.post("/add-note", authenticateToken, async (req, res) => {
   try {
