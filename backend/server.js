@@ -141,7 +141,12 @@ app.get("/get-user", authenticateToken, async (req, res) => {
 
     return res.status(200).json({
       error: false,
-      user: isUser,
+      user: {
+        fullname: isUser.fullname,
+        email: isUser.email,
+        _id: isUser._id,
+        createdOn: isUser.createdOn,
+      },
       message: "Found",
     });
   } catch (error) {
