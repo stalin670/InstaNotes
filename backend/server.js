@@ -76,6 +76,7 @@ app.post("/create-account", async (req, res) => {
   }
 });
 
+// login api
 app.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -125,6 +126,7 @@ app.post("/login", async (req, res) => {
   }
 });
 
+// add note api
 app.post("/add-note", authenticateToken, async (req, res) => {
   try {
     const { title, content, tags } = req.body;
@@ -163,6 +165,7 @@ app.post("/add-note", authenticateToken, async (req, res) => {
   }
 });
 
+// update note api
 app.put("/edit-note/:noteId", authenticateToken, async (req, res) => {
   try {
     const noteId = req.params.noteId;
@@ -194,6 +197,24 @@ app.put("/edit-note/:noteId", authenticateToken, async (req, res) => {
     return res
       .status(500)
       .json({ error: false, note, message: "Internal server error" });
+  }
+});
+
+// get all notes api
+app.get("/get-all-notes/", authenticateToken, async (req, res) => {
+  try {
+    const user = req.user;
+    const notes = await Note.find({ userId: user._id }).sort({ isPinned: -1 });
+    return res.status(200).json({
+      error: false,
+      notes,
+      message: "All notes retrieved successfully",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      error: true,
+      message: "Internal Server Error",
+    });
   }
 });
 
