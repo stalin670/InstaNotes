@@ -59,7 +59,7 @@ app.post("/create-account", async (req, res) => {
     await newUser.save();
 
     const accessToken = jwt.sign({ newUser }, process.env.JWT_SECRET, {
-      expiresIn: "36000h",
+      expiresIn: "36000m",
     });
 
     return res.status(201).json({
@@ -72,6 +72,55 @@ app.post("/create-account", async (req, res) => {
     return res
       .status(500)
       .json({ message: "Internal Server Error", error: true });
+  }
+});
+
+app.post("/login", async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    if (!email) {
+      return res
+        .status(400)
+        .json({ error: true, message: "Email is required" });
+    }
+
+    if (!password) {
+      return res
+        .status(400)
+        .json({ error: true, message: "Password is required" });
+    }
+
+    const isUser = await User.findOne({ email: email });
+
+    if (!isUser) {
+      return res
+        .status(404)
+        .json({ error: true, message: "User does not exist" });
+    }
+
+    const comparePassword = await bcrypt.compare(password, isUser.password);
+    if (!comparePassword) {
+      return res
+        .status(403)
+        .json({ error: true, message: "Password is incorrect" });
+    }
+
+    const user = { user: isUser };
+    const accessToken = jwt.sign({ user }, process.env.JWT_SECRET, {
+      expiresIn: "36000m",
+    });
+
+    return res.status(200).json({
+      error: false,
+      message: "User logged in successfully",
+      email,
+      accessToken,
+    });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ error: true, message: "Internal server error" });
   }
 });
 
