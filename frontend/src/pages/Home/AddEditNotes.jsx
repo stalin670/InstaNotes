@@ -25,7 +25,7 @@ const AddEditNotes = ({
       });
 
       if (response.data && response.data.note) {
-        showToastMessage("Note Added Successfully");
+        showToastMessage("Note Added Successfully", "add");
         getAllNotes();
         onClose();
       }
@@ -51,7 +51,7 @@ const AddEditNotes = ({
       });
 
       if (response.data && response.data.note) {
-        showToastMessage("Note Updated Successfully");
+        showToastMessage("Note Updated Successfully", "update");
         getAllNotes();
         onClose();
       }
@@ -66,7 +66,7 @@ const AddEditNotes = ({
     }
   };
 
-  const handleAddNote = () => {
+  const handleAddNote = async () => {
     if (!title) {
       setError("Please enter the title");
       return;
@@ -80,9 +80,11 @@ const AddEditNotes = ({
     setError(null);
 
     if (type == "edit") {
-      editNote();
+      await editNote();
     } else {
-      addNewNote();
+      await addNewNote();
+      getAllNotes();
+      onClose();
     }
   };
 
