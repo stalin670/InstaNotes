@@ -259,12 +259,13 @@ app.delete("/delete-note/:noteId", authenticateToken, async (req, res) => {
     if (!note) {
       return res.status(404).json({
         error: true,
+        note,
         message: "Note not found",
       });
     }
 
     await Note.deleteOne({ _id: noteId, userId: user._id });
-    return res.status(404).json({
+    return res.status(200).json({
       error: false,
       message: "Note deleted successfully",
     });
