@@ -1,5 +1,5 @@
 import axios from "axios";
-import { BASE_URL } from "./constants";
+import BASE_URL from "./constants.js";
 
 const axiosInstance = axios.create({
   baseURL: BASE_URL,
@@ -9,7 +9,7 @@ const axiosInstance = axios.create({
   },
 });
 
-axiosInstance.interceptors(
+axiosInstance.interceptors.request.use(
   (config) => {
     const accessToken = localStorage.getItem("token");
     if (accessToken) {
