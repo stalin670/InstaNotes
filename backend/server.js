@@ -2,6 +2,7 @@ require("dotenv").config();
 const mongoose = require("mongoose");
 const dbConnect = require("./models/dbConnect.js");
 const express = require("express");
+const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
 const { authenticateToken } = require("./utils.js");
@@ -15,9 +16,11 @@ const PORT = process.env.PORT;
 dbConnect();
 
 app.use(express.json());
+app.use(cookieParser());
 app.use(
   cors({
-    origin: "*",
+    origin: ["http://localhost:5173"],
+    credentials: true,
   })
 );
 
