@@ -11,7 +11,7 @@ InstaNotes is a powerful and intuitive notes app designed to help you quickly ca
 
 ## 🔗 Live Demo
 
-Check out the live demo of InstaNotes [here](https://insta-notes.vercel.app/).
+Check out the live demo of InstaNotes [here](https://instanotes-2a1b.onrender.com/).
 
 ## ✨ Features
 
