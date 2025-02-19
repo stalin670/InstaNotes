@@ -29,10 +29,6 @@ app.use(
   })
 );
 
-app.get("/", (req, res) => {
-  return res.json({ data: "Hello Js" });
-});
-
 // APIs
 
 // create-account
