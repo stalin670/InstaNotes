@@ -1,0 +1,12 @@
+{
+  "name": "instanotes",
+  "version": "1.0.0",
+  "description": "InstaNotes is a powerful and intuitive notes app designed to help you quickly capture, organize, and manage your notes. Built with a modern tech stack, it offers a seamless user experience with features like authentication, authorization, and secure storage of notes.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
