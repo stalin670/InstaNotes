@@ -1,14 +1,13 @@
-const dotenv = require("dotenv");
-const mongoose = require("mongoose");
-const dbConnect = require("./models/dbConnect.js");
-const express = require("express");
-const cookieParser = require("cookie-parser");
-const cors = require("cors");
-const jwt = require("jsonwebtoken");
-const { authenticateToken } = require("./utils.js");
-const User = require("./models/user.model.js");
-const Note = require("./models/note.model.js");
-const bcrypt = require("bcrypt");
+import dotenv from "dotenv";
+import dbConnect from "./models/dbConnect.js";
+import express from "express";
+import cookieParser from "cookie-parser";
+import cors from "cors";
+import jwt from "jsonwebtoken";
+import { authenticateToken } from "./utils.js";
+import User from "./models/user.model.js";
+import Note from "./models/note.model.js";
+import bcrypt from "bcrypt";
 
 import path from "path";
 
@@ -364,4 +363,4 @@ app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
 
-module.exports = app;
+export default app;
