@@ -10,9 +10,13 @@ const User = require("./models/user.model.js");
 const Note = require("./models/note.model.js");
 const bcrypt = require("bcrypt");
 
+import path from "path";
+
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT;
+
+const __dirname = path.resolve();
 
 dbConnect();
 
@@ -347,6 +351,14 @@ app.get("/search-notes/", authenticateToken, async (req, res) => {
     });
   }
 });
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "./frontend/dist")));
+
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "./frontend", "dist", "index.html"));
+  });
+}
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
